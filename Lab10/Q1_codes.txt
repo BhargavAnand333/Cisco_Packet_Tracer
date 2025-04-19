@@ -1,0 +1,83 @@
+Router0: 1841
+
+Router> enable
+Router# configure terminal
+Router(config)# hostname R0
+R0(config)# interface fastethernet 0/0
+R0(config-if)# ip address 192.168.1.1 255.255.255.0
+R0(config-if)# no shutdown
+R0(config-if)# exit
+R0(config)# interface serial 0/0/0
+R0(config-if)# ip address 10.0.0.1 255.255.255.0
+R0(config-if)# clock rate 64000
+R0(config-if)# no shutdown
+R0(config-if)# exit
+R0(config)# router rip
+R0(config-router)# version 2
+R0(config-router)# network 192.168.1.0
+R0(config-router)# network 10.0.0.0
+R0(config-router)# exit
+
+**************************************
+Router1: 2620XM
+
+Router> enable
+Router# configure terminal
+Router(config)# hostname R2
+R2(config)# interface serial 0/0
+R2(config-if)# ip address 10.0.0.2 255.255.255.0
+R2(config-if)# no shutdown
+R2(config-if)# exit
+R2(config)# interface serial 0/1
+R2(config-if)# ip address 20.0.0.1 255.255.255.0
+R2(config-if)# clock rate 64000
+R2(config-if)# no shutdown
+R2(config-if)# exit
+R2(config)# router rip
+R2(config-router)# version 2
+R2(config-router)# network 10.0.0.0
+R2(config-router)# network 20.0.0.0
+R2(config-router)# exit
+
+
+**************************************
+Router2: 2620XM
+
+Router> enable
+Router# configure terminal
+Router(config)# hostname R4
+R4(config)# interface serial 0/0
+R4(config-if)# ip address 20.0.0.2 255.255.255.0
+R4(config-if)# no shutdown
+R4(config-if)# exit
+R4(config)# interface serial 0/1
+R4(config-if)# ip address 30.0.0.1 255.255.255.0
+R4(config-if)# clock rate 64000
+R4(config-if)# no shutdown
+R4(config-if)# exit
+R4(config)# router rip
+R4(config-router)# version 2
+R4(config-router)# network 20.0.0.0
+R4(config-router)# network 30.0.0.0
+R4(config-router)# exit
+
+
+**************************************
+Router3: 2811
+
+Router> enable
+Router# configure terminal
+Router(config)# hostname RA
+RA(config)# interface serial 0/0/0
+RA(config-if)# ip address 30.0.0.2 255.255.255.0
+RA(config-if)# no shutdown
+RA(config-if)# exit
+RA(config)# interface fastethernet 0/0
+RA(config-if)# ip address 192.168.2.1 255.255.255.0
+RA(config-if)# no shutdown
+RA(config-if)# exit
+RA(config)# router rip
+RA(config-router)# version 2
+RA(config-router)# network 30.0.0.0
+RA(config-router)# network 192.168.2.0
+RA(config-router)# exit

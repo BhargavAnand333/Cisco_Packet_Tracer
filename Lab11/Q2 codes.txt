@@ -1,0 +1,38 @@
+⚙️ Step 1: Configure the Server as an NTP Server
+🔧 On Server0
+1) Click Server0 → Desktop → IP Configuration
+
+IP: 192.168.1.2
+
+Subnet: 255.255.255.0
+
+Default Gateway: 192.168.1.1 (Router0's IP)
+
+2) Go to Services tab → NTP
+
+Turn NTP Service ON
+
+Current Date/Time can be set as needed
+
+Note the NTP server address is the same as the Server’s IP (192.168.1.2)
+
+**************************************************************
+
+Router:
+
+enable
+configure terminal
+interface FastEthernet0/0
+ ip address 192.168.1.1 255.255.255.0
+ no shutdown
+exit
+ntp server 192.168.1.2
+end
+write memory
+
+
+***************************************************************
+
+Verify:
+
+show ntp associations

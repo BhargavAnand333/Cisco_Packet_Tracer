@@ -1,0 +1,79 @@
+Router0 (Left Side)
+
+enable
+configure terminal
+
+! Configure FastEthernet0/1 (LAN side)
+interface FastEthernet0/1
+ ip address 10.0.0.1 255.255.255.0
+ no shutdown
+exit
+
+! Configure Serial0/0/0 (WAN side)
+interface Serial0/0/0
+ ip address 2.0.0.1 255.255.255.0
+ clock rate 64000     ! Only on DCE side
+ no shutdown
+exit
+
+! Add static route to reach the private network (192.168.0.0)
+ip route 192.168.0.0 255.255.255.0 2.0.0.2
+
+*************************************************************************
+
+Router1(Right Side)
+
+enable
+configure terminal
+
+! Configure FastEthernet0/1 (LAN side)
+interface FastEthernet0/1
+ ip address 192.168.0.1 255.255.255.0
+ no shutdown
+exit
+
+! Configure Serial0/0/0 (WAN side)
+interface Serial0/0/0
+ ip address 2.0.0.2 255.255.255.0
+ no shutdown
+exit
+
+! NAT configuration: Static NAT for server
+ip nat inside source static 192.168.0.5 2.0.0.5
+
+! Define inside and outside interfaces for NAT
+interface FastEthernet0/1
+ ip nat inside
+exit
+
+interface Serial0/0/0
+ ip nat outside
+exit
+
+! Add static route to reach left-side LAN
+ip route 10.0.0.0 255.255.255.0 2.0.0.1
+
+*******************************************************************************
+
+PC & Server Configuration
+
+
+On Server (192.168.0.5)
+IP: 192.168.0.5
+
+Subnet: 255.255.255.0
+
+Gateway: 192.168.0.1
+______________________________
+On PC0 (10.0.0.2)
+IP: 10.0.0.2
+
+Subnet: 255.255.255.0
+
+Gateway: 10.0.0.1
+
+*********************************************************************************
+
+Testing:
+
+ping 2.0.0.5
